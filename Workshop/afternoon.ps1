@@ -27,7 +27,6 @@ Get-Service | Where-Object { $_.Name -like "Win*" }
 Get-Service | Where-Object { $_.Name -match "^W" }
 "BITS", "Spooler" | Where-Object { $_ -in (Get-Service).Name }
 
-# Lab 3 goes here - Filter services and create report
 # Task: Get all running services that start with "W" and export to CSV
 Get-Service | Where-Object { $_.Status -eq "Running" -and $_.Name -like "W*" } | 
 Select-Object Name, DisplayName, Status | 
