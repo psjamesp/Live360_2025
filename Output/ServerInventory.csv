@@ -1,0 +1,4 @@
+"ServerName","Status","OSName","OSVersion","Manufacturer","Model","TotalMemoryGB","FreeMemoryGB","MemoryUsedPercent","TotalDiskGB","FreeDiskGB","DiskUsedPercent","IPAddress","UptimeDays","LastBootTimeUTC","RunningServices","StoppedServices"
+"SRV01","Online","Windows Server 2022 Standard","10.0.20348","Lenovo","PowerEdge R740","10","8","20","958","178","81.42","192.168.37.216","11","2025-11-07 18:38:54","53","27"
+"SRV02","Online","Windows Server 2022 Standard","10.0.20348","HP","PowerEdge R740","57","19","66.67","871","74","91.5","192.168.83.164","27","2025-10-22 17:38:54","95","33"
+"DC01","Online","Windows Server 2019 Datacenter","10.0.17763","HP","PowerEdge R740","24","12","50","230","165","28.26","192.168.159.246","1","2025-11-17 18:38:54","52","31"

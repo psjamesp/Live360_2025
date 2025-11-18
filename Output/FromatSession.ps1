@@ -417,7 +417,7 @@ function Get-DemoHTMLReport {
     Write-Host "---------------------------------" -ForegroundColor Cyan
     
     # Get server information
-    $servers = Get-ServerInfo
+    $servers = Get-DemoServerInfo
     
     # Define external CSS file path
     $cssPath = "$PWD\ServerReport.css"
@@ -647,7 +647,7 @@ function Get-DemoConvertToJSON {
     Write-Host "------------------------" -ForegroundColor Cyan
     
     # Get server information
-    $servers = Get-ServerInfo
+    $servers = Get-DemoServerInfo
     
     # Create a simplified version for JSON export
     $jsonData = $servers | ForEach-Object {
