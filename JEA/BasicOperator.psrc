@@ -1,0 +1,54 @@
+@{
+    # Role Capability File for Basic Operators
+    # Defines what commands and functions are available to users in this role
+    
+    GUID = '4d9c8a5e-7f3b-4e2a-9c1d-8b6e5f4a3c2b'
+    Author = 'IT Security Team'
+    CompanyName = 'Your Company'
+    Copyright = '(c) 2025. All rights reserved.'
+    Description = 'Basic operator role with limited administrative capabilities'
+    
+    # PowerShell version requirements
+    ModulesToImport = 'Microsoft.PowerShell.Management', 'Microsoft.PowerShell.Utility'
+    
+    # Visible cmdlets - only these will be available
+    VisibleCmdlets = @(
+        'Get-Service',
+        'Restart-Service',
+        'Get-Process',
+        'Get-EventLog',
+        'Get-WindowsFeature',
+        @{
+            Name = 'Stop-Service'
+            Parameters = @{
+                Name = 'Name'
+                ValidateSet = 'Spooler', 'W3SVC', 'WinRM'
+            }
+        },
+        @{
+            Name = 'Start-Service'
+            Parameters = @{
+                Name = 'Name'
+                ValidateSet = 'Spooler', 'W3SVC', 'WinRM'
+            }
+        }
+    )
+    
+    # Visible functions
+    VisibleFunctions = @()
+    
+    # Visible external commands
+    VisibleExternalCommands = @('C:\Windows\System32\whoami.exe', 'C:\Windows\System32\ipconfig.exe')
+    
+    # Visible aliases
+    VisibleAliases = @('gps', 'gsv')
+    
+    # Function definitions available in the session
+    FunctionDefinitions = @{
+        Name = 'Get-ServiceStatus'
+        ScriptBlock = {
+            param([string]$ServiceName)
+            Get-Service -Name $ServiceName | Select-Object Name, Status, StartType
+        }
+    }
+}

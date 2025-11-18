@@ -1,0 +1,82 @@
+@{
+    # Role Capability File for Advanced Operators
+    # More privileged role with additional administrative capabilities
+    
+    GUID = '7e6f5d4c-3b2a-1e0f-9d8c-7b6a5f4e3d2c'
+    Author = 'IT Security Team'
+    CompanyName = 'Your Company'
+    Copyright = '(c) 2025. All rights reserved.'
+    Description = 'Advanced operator role with extended administrative capabilities'
+    
+    # PowerShell version requirements
+    ModulesToImport = 'Microsoft.PowerShell.Management', 'Microsoft.PowerShell.Utility', 'NetTCPIP'
+    
+    # Visible cmdlets with parameters
+    VisibleCmdlets = @(
+        'Get-Service',
+        'Start-Service',
+        'Stop-Service',
+        'Restart-Service',
+        'Get-Process',
+        'Stop-Process',
+        'Get-EventLog',
+        'Get-WindowsFeature',
+        'Install-WindowsFeature',
+        'Get-NetIPAddress',
+        'Get-NetAdapter',
+        'Test-NetConnection',
+        @{
+            Name = 'Set-Service'
+            Parameters = @{
+                Name = 'StartupType'
+                ValidateSet = 'Automatic', 'Manual', 'Disabled'
+            }
+        },
+        @{
+            Name = 'Restart-Computer'
+            Parameters = @{
+                Name = 'Force'
+            }
+            ValidateSet = 'Force'
+        }
+    )
+    
+    # Visible functions
+    VisibleFunctions = @()
+    
+    # Visible external commands
+    VisibleExternalCommands = @(
+        'C:\Windows\System32\whoami.exe',
+        'C:\Windows\System32\ipconfig.exe',
+        'C:\Windows\System32\ping.exe',
+        'C:\Windows\System32\netstat.exe'
+    )
+    
+    # Visible aliases
+    VisibleAliases = @('gps', 'gsv', 'saps', 'spps')
+    
+    # Function definitions
+    FunctionDefinitions = @(
+        @{
+            Name = 'Get-SystemInfo'
+            ScriptBlock = {
+                [PSCustomObject]@{
+                    ComputerName = $env:COMPUTERNAME
+                    OSVersion = [System.Environment]::OSVersion.Version
+                    TotalMemoryGB = [Math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 2)
+                    FreeMemoryGB = [Math]::Round((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1MB, 2)
+                }
+            }
+        },
+        @{
+            Name = 'Get-DiskSpace'
+            ScriptBlock = {
+                Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Used -ne $null } | 
+                Select-Object Name, @{N='SizeGB';E={[Math]::Round($_.Used/1GB + $_.Free/1GB,2)}}, 
+                              @{N='UsedGB';E={[Math]::Round($_.Used/1GB,2)}}, 
+                              @{N='FreeGB';E={[Math]::Round($_.Free/1GB,2)}},
+                              @{N='PercentFree';E={[Math]::Round(($_.Free/($_.Used + $_.Free))*100,2)}}
+            }
+        }
+    )
+}

@@ -1,0 +1,55 @@
+@{
+    # Session Configuration File for DEMO Endpoint
+    # Defines who can connect and which role capabilities they receive
+    
+    # Unique identifier for this session configuration
+    GUID = '9a7b6c5d-4e3f-2a1b-0c9d-8e7f6a5b4c3d'
+    
+    # Author information
+    Author = 'IT Security Team'
+    CompanyName = 'Your Company'
+    Copyright = '(c) 2025. All rights reserved.'
+    Description = 'JEA DEMO endpoint for limited administrative tasks'
+    
+    # PowerShell version
+    SchemaVersion = '2.0.0.0'
+    
+    # Session type - RestrictedRemoteServer provides JEA constraints
+    SessionType = 'RestrictedRemoteServer'
+    
+    # Run as a Virtual Account (high privilege temporary account)
+    RunAsVirtualAccount = $true
+    
+    # Transcript directory for auditing
+    TranscriptDirectory = 'C:\ProgramData\JEAConfiguration\Transcripts'
+    
+    # Language mode - restrict to NoLanguage for maximum security
+    LanguageMode = 'NoLanguage'
+    
+    # Execution policy
+    ExecutionPolicy = 'Restricted'
+    
+    # Role definitions - map users/groups to role capabilities
+    RoleDefinitions = @{
+        # Domain users or groups
+        'DOMAIN\HelpDesk-Tier1' = @{
+            RoleCapabilities = 'BasicOperator'
+        }
+        'DOMAIN\ServerAdmins' = @{
+            RoleCapabilities = 'BasicOperator', 'AdvancedOperator'
+        }
+        # Local groups (use BUILTIN or computer name)
+        'BUILTIN\Administrators' = @{
+            RoleCapabilities = 'BasicOperator'
+        }
+    }
+    
+    # Modules to import (if needed)
+    ModulesToImport = @()
+    
+    # Mount user drive
+    MountUserDrive = $false
+    
+    # User drive maximum size (in bytes) - 50MB
+    UserDriveMaximumSize = 52428800
+}
