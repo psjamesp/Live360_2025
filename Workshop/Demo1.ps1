@@ -229,6 +229,15 @@ foreach ($s in $service) {
     }
 }
 
+if ($service.Status -eq "running") {
+    Write-Host "The service is running"
+}
+elseif ($service.status -eq "stopped") {
+    Start-Service -Name $service.Name
+}
+else {
+    Write-Host "The service is in a weird state"
+}
 
 
 # Lab 3 goes here
@@ -238,14 +247,16 @@ foreach ($s in $service) {
 Get-Date
 Get-Date | Get-Member
 Get-Date | Select-Object Hour
-Get-Date -Format "MM-dd-yyyy hh:mm"
-(Get-Date).AddDays(-4)
-$dog = "Daisy"
-"My dog's name is $dog"
-'My dogs name is $dog'
+(get-date).Year
 
-# Lab 2 goes here
-#endregion
+Get-Date -Format "MM-dd-yyyy hh:mm"
+get-date -format "MM-dd-yyyy hh:mm"
+
+(Get-Date).AddDays(-4)
+
+$daysuntilchristmas = (get-date 12/25/2025) - (get-date)
+$daysuntilchristmas.Days
+
 
 #region 07 - Remoting
 $cred = Get-Credential
@@ -260,7 +271,18 @@ Invoke-Command -ComputerName (Get-ADComputer -Filter "OU=printers,dc=test,dc=lab
 #region 08 - Registry and Environment
 Get-Item -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp'
 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name PortNumber -Value "3399"
-New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "smileyface" -Value "yes"
+New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "smileyface" -Value "yes" 
 Remove-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "smileyface"
 # Lab 4 goes here
 #endregion
+
+$cred = Get-Credential
+Enter-PSSession -ComputerName srv01 -Credential $cred
+Invoke-Command -ComputerName srv01, srv02, dc01 -ScriptBlock { $env:COMPUTERNAME } -Credential $cred
+
+invoke-command -ComputerName srv01 -FilePath .\Scripts\RemoteScript.ps1 -Credential $cred
+Enter-PSSession -HostName srv01 -UserName 714tech\bob
+
+$computers = get-adcomputer -Filter * -SearchBase "Ou=SCCM,OU=Servers,DC=test,DC=lab" | Select-Object -ExpandProperty Name
+invoke-command -ComputerName $computers -ScriptBlock { restart-computer -Force }
+Invoke-Command -ComputerName (get-coment .\servers.txt) -ScriptBlock { do stuff }
